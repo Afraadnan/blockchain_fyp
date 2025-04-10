@@ -27,7 +27,7 @@ contract DeadMansSwitchFHE {
     event BeneficiaryShareUpdated(address indexed beneficiary, uint256 newShare);
     event FundsDeposited(address indexed sender, uint256 amount);
     event FundsDistributed(address indexed beneficiary, uint256 amount);
-    event InactivityVerified(bool isInactive);
+    event InactivityVerified(euint8 encryptedInactive);
     
     modifier onlyOwner() {
         require(msg.sender == owner, "Not the owner");
@@ -54,7 +54,7 @@ contract DeadMansSwitchFHE {
         emit HeartbeatReceived(owner);
     }
     
-    function verifyInactivity() public view returns (ebool) {
+    function verifyInactivity() public view returns (euint8) {
         // Create encrypted current time
         euint32 currentTime = TFHE.asEuint32(uint32(block.timestamp));
         
@@ -65,22 +65,21 @@ contract DeadMansSwitchFHE {
         // If lastActive < inactiveThreshold, then the owner is inactive
         ebool isInactive = TFHE.lt(lastActive, inactiveThreshold);
         
-        return isInactive;
+        // Convert ebool to euint8 (0 for false, 1 for true)
+        euint8 result = TFHE.select(isInactive, TFHE.asEuint8(1), TFHE.asEuint8(0));
+        
+        return result;
     }
     
     function checkInactivity() external {
-        ebool isInactive = verifyInactivity();
-        bool decryptedResult = TFHE.decrypt(isInactive);
-        emit InactivityVerified(decryptedResult);
+        euint8 encryptedResult = verifyInactivity();
+        emit InactivityVerified(encryptedResult);
     }
     
-    function distributeAssets() external {
+    // Since we can't decrypt on-chain, this function must be called with proof of inactivity
+    function distributeAssets(uint8 inactivityProof) external {
         require(beneficiaries.length > 0, "No beneficiaries defined");
-        
-        // Verify inactivity before distributing
-        ebool isInactive = verifyInactivity();
-        bool decryptedInactive = TFHE.decrypt(isInactive);
-        require(decryptedInactive, "Owner is still active");
+        require(inactivityProof == 1, "Owner must be inactive to distribute");
         
         uint256 totalBalance = address(this).balance;
         require(totalBalance > 0, "No assets to distribute");
@@ -181,14 +180,6 @@ contract DeadMansSwitchFHE {
     function emergencyWithdraw() external onlyOwner {
         (bool success, ) = owner.call{value: address(this).balance}("");
         require(success, "Transfer failed");
-    }
-    
-    // For checking inactivity period and last active timestamp (for testing)
-    function getDecryptedValues() external view onlyOwner returns (uint32, uint32) {
-        return (
-            TFHE.decrypt(inactivityPeriod),
-            TFHE.decrypt(lastActive)
-        );
     }
     
     receive() external payable {
