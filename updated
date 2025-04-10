@@ -1,0 +1,43 @@
+const { expect } = require("chai");
+const { ethers } = require("hardhat");
+const { getSigners, createInstances } = require("./utils/instance");
+
+describe("DeadMansSwitchFHE Basic Test", function() {
+  let contract;
+  let signers;
+  let instances;
+  
+  before(async function() {
+    // This can take some time, so be patient
+    signers = await getSigners();
+    
+    // Deploy the contract
+    const DeadMansSwitchFHE = await ethers.getContractFactory("DeadMansSwitchFHE");
+    contract = await DeadMansSwitchFHE.deploy();
+    await contract.deployed();
+    
+    // Create FHE instances for each signer
+    instances = await createInstances(signers, contract);
+  });
+  
+  it("should initialize correctly", async function() {
+    // Initialize with a 60-second inactivity period
+    await contract.initialize(60);
+    expect(await contract.owner()).to.equal(signers[0].address);
+    expect(await contract.totalShares()).to.equal(0);
+  });
+  
+  it("should add beneficiaries", async function() {
+    await contract.addBeneficiary(signers[1].address, 70);
+    await contract.addBeneficiary(signers[2].address, 30);
+    
+    expect(await contract.totalShares()).to.equal(100);
+    
+    const [addresses, shares] = await contract.getAllBeneficiaries();
+    expect(addresses.length).to.equal(2);
+    expect(shares[0]).to.equal(70);
+    expect(shares[1]).to.equal(30);
+  });
+  
+  // Skip FHE testing for now - focus on non-FHE functionality first
+});
