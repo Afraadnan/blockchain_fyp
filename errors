@@ -1,0 +1,257 @@
+  DeadMansSwitchFHE Contract
+    Deployment and Initialization
+      1) Should set the correct owner
+      2) Should not allow re-initialization
+    Beneficiary Management
+      3) Should add a beneficiary correctly
+      4) Should not allow non-owners to add beneficiaries
+      5) Should track total shares correctly
+      6) Should not allow total shares to exceed 100%
+      7) Should update beneficiary shares correctly
+      8) Should remove beneficiaries correctly
+    Heartbeat functionality
+      9) Should allow owner to send heartbeat
+      10) Should not allow non-owners to send heartbeat
+    Fund management
+      11) Should accept deposits
+      12) Should allow emergency withdrawal by owner
+
+  ConfidentialERC20:FHEGas
+    13) gas consumed during transfer
+    14) gas consumed during transferFrom
+
+  ConfidentialERC20
+    15) should mint the contract
+    16) should transfer tokens between two users
+    17) should not transfer tokens between two users
+    18) should be able to transferFrom only if allowance is sufficient
+    19) DEBUG - using debug.decrypt64 for debugging transfer
+
+  TestAsyncDecrypt
+    20) "before all" hook for "test async decrypt bool"
+
+
+  0 passing (3s)
+  20 failing
+
+  1) DeadMansSwitchFHE Contract
+       Deployment and Initialization
+         Should set the correct owner:
+     TypeError: deadMansSwitch.deployed is not a function
+      at deployDeadMansSwitchFixture (test/SmartContract.ts:15:26)
+      at async loadFixture (node_modules/@nomicfoundation/hardhat-network-helpers/src/loadFixture.ts:59:18)
+      at async Context.<anonymous> (test/SmartContract.ts:32:41)
+
+  2) DeadMansSwitchFHE Contract
+       Deployment and Initialization
+         Should not allow re-initialization:
+     TypeError: deadMansSwitch.deployed is not a function
+      at deployDeadMansSwitchFixture (test/SmartContract.ts:15:26)
+      at async loadFixture (node_modules/@nomicfoundation/hardhat-network-helpers/src/loadFixture.ts:59:18)
+      at async Context.<anonymous> (test/SmartContract.ts:37:34)
+
+  3) DeadMansSwitchFHE Contract
+       Beneficiary Management
+         Should add a beneficiary correctly:
+     TypeError: deadMansSwitch.deployed is not a function
+      at deployDeadMansSwitchFixture (test/SmartContract.ts:15:26)
+      at async loadFixture (node_modules/@nomicfoundation/hardhat-network-helpers/src/loadFixture.ts:59:18)
+      at async Context.<anonymous> (test/SmartContract.ts:44:55)
+
+  4) DeadMansSwitchFHE Contract
+       Beneficiary Management
+         Should not allow non-owners to add beneficiaries:
+     TypeError: deadMansSwitch.deployed is not a function
+      at deployDeadMansSwitchFixture (test/SmartContract.ts:15:26)
+      at async loadFixture (node_modules/@nomicfoundation/hardhat-network-helpers/src/loadFixture.ts:59:18)
+      at async Context.<anonymous> (test/SmartContract.ts:57:58)
+
+  5) DeadMansSwitchFHE Contract
+       Beneficiary Management
+         Should track total shares correctly:
+     TypeError: deadMansSwitch.deployed is not a function
+      at deployDeadMansSwitchFixture (test/SmartContract.ts:15:26)
+      at async loadFixture (node_modules/@nomicfoundation/hardhat-network-helpers/src/loadFixture.ts:59:18)
+      at async Context.<anonymous> (test/SmartContract.ts:65:69)
+
+  6) DeadMansSwitchFHE Contract
+       Beneficiary Management
+         Should not allow total shares to exceed 100%:
+     TypeError: deadMansSwitch.deployed is not a function
+      at deployDeadMansSwitchFixture (test/SmartContract.ts:15:26)
+      at async loadFixture (node_modules/@nomicfoundation/hardhat-network-helpers/src/loadFixture.ts:59:18)
+      at async Context.<anonymous> (test/SmartContract.ts:74:69)
+
+  7) DeadMansSwitchFHE Contract
+       Beneficiary Management
+         Should update beneficiary shares correctly:
+     TypeError: deadMansSwitch.deployed is not a function
+      at deployDeadMansSwitchFixture (test/SmartContract.ts:15:26)
+      at async loadFixture (node_modules/@nomicfoundation/hardhat-network-helpers/src/loadFixture.ts:59:18)
+      at async Context.<anonymous> (test/SmartContract.ts:83:55)
+
+  8) DeadMansSwitchFHE Contract
+       Beneficiary Management
+         Should remove beneficiaries correctly:
+     TypeError: deadMansSwitch.deployed is not a function
+      at deployDeadMansSwitchFixture (test/SmartContract.ts:15:26)
+      at async loadFixture (node_modules/@nomicfoundation/hardhat-network-helpers/src/loadFixture.ts:59:18)
+      at async Context.<anonymous> (test/SmartContract.ts:94:69)
+
+  9) DeadMansSwitchFHE Contract
+       Heartbeat functionality
+         Should allow owner to send heartbeat:
+     TypeError: deadMansSwitch.deployed is not a function
+      at deployDeadMansSwitchFixture (test/SmartContract.ts:15:26)
+      at async loadFixture (node_modules/@nomicfoundation/hardhat-network-helpers/src/loadFixture.ts:59:18)
+      at async Context.<anonymous> (test/SmartContract.ts:110:41)
+
+  10) DeadMansSwitchFHE Contract
+       Heartbeat functionality
+         Should not allow non-owners to send heartbeat:
+     TypeError: deadMansSwitch.deployed is not a function
+      at deployDeadMansSwitchFixture (test/SmartContract.ts:15:26)
+      at async loadFixture (node_modules/@nomicfoundation/hardhat-network-helpers/src/loadFixture.ts:59:18)
+      at async Context.<anonymous> (test/SmartContract.ts:119:44)
+
+  11) DeadMansSwitchFHE Contract
+       Fund management
+         Should accept deposits:
+     TypeError: deadMansSwitch.deployed is not a function
+      at deployDeadMansSwitchFixture (test/SmartContract.ts:15:26)
+      at async loadFixture (node_modules/@nomicfoundation/hardhat-network-helpers/src/loadFixture.ts:59:18)
+      at async Context.<anonymous> (test/SmartContract.ts:129:48)
+
+  12) DeadMansSwitchFHE Contract
+       Fund management
+         Should allow emergency withdrawal by owner:
+     TypeError: deadMansSwitch.deployed is not a function
+      at deployDeadMansSwitchFixture (test/SmartContract.ts:15:26)
+      at async loadFixture (node_modules/@nomicfoundation/hardhat-network-helpers/src/loadFixture.ts:59:18)
+      at async Context.<anonymous> (test/SmartContract.ts:141:41)
+
+  13) ConfidentialERC20:FHEGas
+       gas consumed during transfer:
+     Error: Transaction reverted: function returned an unexpected amount of data
+    at MyConfidentialERC20.trivialEncrypt (fhevm/lib/Impl.sol:340)
+    at MyConfidentialERC20.internal@9117 (contracts/MyConfidentialERC20.sol)
+    at MyConfidentialERC20.asEuint64 (fhevm/lib/TFHE.sol:10296)
+    at MyConfidentialERC20.add (fhevm/lib/TFHE.sol:6446)
+    at MyConfidentialERC20._unsafeMintNoEvent (fhevm-contracts/contracts/token/ERC20/ConfidentialERC20.sol:178)
+    at MyConfidentialERC20._unsafeMint (fhevm-contracts/contracts/token/ERC20/ConfidentialERC20.sol:169)
+    at MyConfidentialERC20.mint (fhevm-contracts/contracts/token/ERC20/extensions/ConfidentialERC20Mintable.sol:36)
+    at EdrProviderWrapper.request (node_modules/hardhat/src/internal/hardhat-network/provider/provider.ts:397:41)
+    at async HardhatEthersSigner.sendTransaction (node_modules/@nomicfoundation/hardhat-ethers/src/signers.ts:125:18)
+    at async send (node_modules/ethers/src.ts/contract/contract.ts:313:20)
+    at async Proxy.mint (node_modules/ethers/src.ts/contract/contract.ts:352:16)
+    at async Context.<anonymous> (test/confidentialERC20/ConfidentialERC20.FHEGas.ts:23:25)
+  
+
+  14) ConfidentialERC20:FHEGas
+       gas consumed during transferFrom:
+     Error: Transaction reverted: function returned an unexpected amount of data
+    at MyConfidentialERC20.trivialEncrypt (fhevm/lib/Impl.sol:340)
+    at MyConfidentialERC20.internal@9117 (contracts/MyConfidentialERC20.sol)
+    at MyConfidentialERC20.asEuint64 (fhevm/lib/TFHE.sol:10296)
+    at MyConfidentialERC20.add (fhevm/lib/TFHE.sol:6446)
+    at MyConfidentialERC20._unsafeMintNoEvent (fhevm-contracts/contracts/token/ERC20/ConfidentialERC20.sol:178)
+    at MyConfidentialERC20._unsafeMint (fhevm-contracts/contracts/token/ERC20/ConfidentialERC20.sol:169)
+    at MyConfidentialERC20.mint (fhevm-contracts/contracts/token/ERC20/extensions/ConfidentialERC20Mintable.sol:36)
+    at EdrProviderWrapper.request (node_modules/hardhat/src/internal/hardhat-network/provider/provider.ts:397:41)
+    at async HardhatEthersSigner.sendTransaction (node_modules/@nomicfoundation/hardhat-ethers/src/signers.ts:125:18)
+    at async send (node_modules/ethers/src.ts/contract/contract.ts:313:20)
+    at async Proxy.mint (node_modules/ethers/src.ts/contract/contract.ts:352:16)
+    at async Context.<anonymous> (test/confidentialERC20/ConfidentialERC20.FHEGas.ts:47:25)
+  
+
+  15) ConfidentialERC20
+       should mint the contract:
+     Error: Transaction reverted: function returned an unexpected amount of data
+    at MyConfidentialERC20.trivialEncrypt (fhevm/lib/Impl.sol:340)
+    at MyConfidentialERC20.internal@9117 (contracts/MyConfidentialERC20.sol)
+    at MyConfidentialERC20.asEuint64 (fhevm/lib/TFHE.sol:10296)
+    at MyConfidentialERC20.add (fhevm/lib/TFHE.sol:6446)
+    at MyConfidentialERC20._unsafeMintNoEvent (fhevm-contracts/contracts/token/ERC20/ConfidentialERC20.sol:178)
+    at MyConfidentialERC20._unsafeMint (fhevm-contracts/contracts/token/ERC20/ConfidentialERC20.sol:169)
+    at MyConfidentialERC20.mint (fhevm-contracts/contracts/token/ERC20/extensions/ConfidentialERC20Mintable.sol:36)
+    at EdrProviderWrapper.request (node_modules/hardhat/src/internal/hardhat-network/provider/provider.ts:397:41)
+    at async HardhatEthersSigner.sendTransaction (node_modules/@nomicfoundation/hardhat-ethers/src/signers.ts:125:18)
+    at async send (node_modules/ethers/src.ts/contract/contract.ts:313:20)
+    at async Proxy.mint (node_modules/ethers/src.ts/contract/contract.ts:352:16)
+    at async Context.<anonymous> (test/confidentialERC20/ConfidentialERC20.ts:24:25)
+  
+
+  16) ConfidentialERC20
+       should transfer tokens between two users:
+     Error: Transaction reverted: function returned an unexpected amount of data
+    at MyConfidentialERC20.trivialEncrypt (fhevm/lib/Impl.sol:340)
+    at MyConfidentialERC20.internal@9117 (contracts/MyConfidentialERC20.sol)
+    at MyConfidentialERC20.asEuint64 (fhevm/lib/TFHE.sol:10296)
+    at MyConfidentialERC20.add (fhevm/lib/TFHE.sol:6446)
+    at MyConfidentialERC20._unsafeMintNoEvent (fhevm-contracts/contracts/token/ERC20/ConfidentialERC20.sol:178)
+    at MyConfidentialERC20._unsafeMint (fhevm-contracts/contracts/token/ERC20/ConfidentialERC20.sol:169)
+    at MyConfidentialERC20.mint (fhevm-contracts/contracts/token/ERC20/extensions/ConfidentialERC20Mintable.sol:36)
+    at EdrProviderWrapper.request (node_modules/hardhat/src/internal/hardhat-network/provider/provider.ts:397:41)
+    at async HardhatEthersSigner.sendTransaction (node_modules/@nomicfoundation/hardhat-ethers/src/signers.ts:125:18)
+    at async send (node_modules/ethers/src.ts/contract/contract.ts:313:20)
+    at async Proxy.mint (node_modules/ethers/src.ts/contract/contract.ts:352:16)
+    at async Context.<anonymous> (test/confidentialERC20/ConfidentialERC20.ts:43:25)
+  
+
+  17) ConfidentialERC20
+       should not transfer tokens between two users:
+     Error: Transaction reverted: function returned an unexpected amount of data
+    at MyConfidentialERC20.trivialEncrypt (fhevm/lib/Impl.sol:340)
+    at MyConfidentialERC20.internal@9117 (contracts/MyConfidentialERC20.sol)
+    at MyConfidentialERC20.asEuint64 (fhevm/lib/TFHE.sol:10296)
+    at MyConfidentialERC20.add (fhevm/lib/TFHE.sol:6446)
+    at MyConfidentialERC20._unsafeMintNoEvent (fhevm-contracts/contracts/token/ERC20/ConfidentialERC20.sol:178)
+    at MyConfidentialERC20._unsafeMint (fhevm-contracts/contracts/token/ERC20/ConfidentialERC20.sol:169)
+    at MyConfidentialERC20.mint (fhevm-contracts/contracts/token/ERC20/extensions/ConfidentialERC20Mintable.sol:36)
+    at EdrProviderWrapper.request (node_modules/hardhat/src/internal/hardhat-network/provider/provider.ts:397:41)
+    at async HardhatEthersSigner.sendTransaction (node_modules/@nomicfoundation/hardhat-ethers/src/signers.ts:125:18)
+    at async send (node_modules/ethers/src.ts/contract/contract.ts:313:20)
+    at async Proxy.mint (node_modules/ethers/src.ts/contract/contract.ts:352:16)
+    at async Context.<anonymous> (test/confidentialERC20/ConfidentialERC20.ts:85:25)
+  
+
+  18) ConfidentialERC20
+       should be able to transferFrom only if allowance is sufficient:
+     Error: Transaction reverted: function returned an unexpected amount of data
+    at MyConfidentialERC20.trivialEncrypt (fhevm/lib/Impl.sol:340)
+    at MyConfidentialERC20.internal@9117 (contracts/MyConfidentialERC20.sol)
+    at MyConfidentialERC20.asEuint64 (fhevm/lib/TFHE.sol:10296)
+    at MyConfidentialERC20.add (fhevm/lib/TFHE.sol:6446)
+    at MyConfidentialERC20._unsafeMintNoEvent (fhevm-contracts/contracts/token/ERC20/ConfidentialERC20.sol:178)
+    at MyConfidentialERC20._unsafeMint (fhevm-contracts/contracts/token/ERC20/ConfidentialERC20.sol:169)
+    at MyConfidentialERC20.mint (fhevm-contracts/contracts/token/ERC20/extensions/ConfidentialERC20Mintable.sol:36)
+    at EdrProviderWrapper.request (node_modules/hardhat/src/internal/hardhat-network/provider/provider.ts:397:41)
+    at async HardhatEthersSigner.sendTransaction (node_modules/@nomicfoundation/hardhat-ethers/src/signers.ts:125:18)
+    at async send (node_modules/ethers/src.ts/contract/contract.ts:313:20)
+    at async Proxy.mint (node_modules/ethers/src.ts/contract/contract.ts:352:16)
+    at async Context.<anonymous> (test/confidentialERC20/ConfidentialERC20.ts:114:25)
+  
+
+  19) ConfidentialERC20
+       DEBUG - using debug.decrypt64 for debugging transfer:
+     Error: Transaction reverted: function returned an unexpected amount of data
+    at MyConfidentialERC20.trivialEncrypt (fhevm/lib/Impl.sol:340)
+    at MyConfidentialERC20.internal@9117 (contracts/MyConfidentialERC20.sol)
+    at MyConfidentialERC20.asEuint64 (fhevm/lib/TFHE.sol:10296)
+    at MyConfidentialERC20.add (fhevm/lib/TFHE.sol:6446)
+    at MyConfidentialERC20._unsafeMintNoEvent (fhevm-contracts/contracts/token/ERC20/ConfidentialERC20.sol:178)
+    at MyConfidentialERC20._unsafeMint (fhevm-contracts/contracts/token/ERC20/ConfidentialERC20.sol:169)
+    at MyConfidentialERC20.mint (fhevm-contracts/contracts/token/ERC20/extensions/ConfidentialERC20Mintable.sol:36)
+    at EdrProviderWrapper.request (node_modules/hardhat/src/internal/hardhat-network/provider/provider.ts:397:41)
+    at async HardhatEthersSigner.sendTransaction (node_modules/@nomicfoundation/hardhat-ethers/src/signers.ts:125:18)
+    at async send (node_modules/ethers/src.ts/contract/contract.ts:313:20)
+    at async Proxy.mint (node_modules/ethers/src.ts/contract/contract.ts:352:16)
+    at async Context.<anonymous> (test/confidentialERC20/ConfidentialERC20.ts:185:27)
+  
+
+  20) TestAsyncDecrypt
+       "before all" hook for "test async decrypt bool":
+     ProviderError: Method set_lastBlockSnapshotForDecrypt is not supported
+      at EdrProviderWrapper.request (/home/afra/Desktop/zama/node_modules/hardhat/src/internal/hardhat-network/provider/provider.ts:406:19)
+      at async initGateway (/home/afra/Desktop/zama/test/asyncDecrypt.ts:48:5)
+      at async Context.<anonymous> (/home/afra/Desktop/zama/test/gatewayDecrypt/testAsyncDecrypt.ts:13:5)
