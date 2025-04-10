@@ -6,8 +6,8 @@ import "fhevm/lib/TFHE.sol";
 contract DeadMansSwitchFHE {
     address public owner;
     bool private initialized;
-    euint32 public inactivityPeriod; // Encrypted inactivity period
-    euint32 public lastActive;       // Encrypted last activity timestamp
+    euint32 private inactivityPeriod; // Encrypted inactivity period in seconds
+    euint32 private lastActive;       // Encrypted last activity timestamp
     
     uint256 public totalShares;
     
@@ -27,7 +27,7 @@ contract DeadMansSwitchFHE {
     event BeneficiaryShareUpdated(address indexed beneficiary, uint256 newShare);
     event FundsDeposited(address indexed sender, uint256 amount);
     event FundsDistributed(address indexed beneficiary, uint256 amount);
-    event InactivityVerified(euint8 encryptedInactive);
+    event InactivityVerified(bool isInactive);
     
     modifier onlyOwner() {
         require(msg.sender == owner, "Not the owner");
@@ -41,6 +41,7 @@ contract DeadMansSwitchFHE {
     function initialize(uint32 _inactivityPeriod) external {
         require(!initialized, "Already initialized");
         owner = msg.sender;
+        // Convert regular uint to encrypted uint
         inactivityPeriod = TFHE.asEuint32(_inactivityPeriod);
         lastActive = TFHE.asEuint32(uint32(block.timestamp));
         initialized = true;
@@ -48,34 +49,38 @@ contract DeadMansSwitchFHE {
     }
     
     function heartbeat() external onlyOwner {
+        // Update the encrypted last active timestamp
         lastActive = TFHE.asEuint32(uint32(block.timestamp));
         emit HeartbeatReceived(owner);
     }
     
-    function verifyInactivity() public view returns (euint8) {
+    function verifyInactivity() public view returns (ebool) {
+        // Create encrypted current time
         euint32 currentTime = TFHE.asEuint32(uint32(block.timestamp));
-        euint32 inactiveThreshold = TFHE.sub(currentTime, inactivityPeriod);
-        ebool isInactive = TFHE.lt(lastActive, inactiveThreshold);
-
-        // Encrypt the boolean result, returning 1 for true and 0 for false
-        euint8 result = TFHE.asEuint8(0); // Default to 0 (inactive)
         
-        // If isInactive is true (1), set the result to 1
-        if (TFHE.eq(isInactive, TFHE.asEbool(true))) {
-            result = TFHE.asEuint8(1); // Inactive
-        }
-
-        // Return the encrypted result as euint8
-        return result;
+        // Calculate the threshold time for inactivity (currentTime - inactivityPeriod)
+        euint32 inactiveThreshold = TFHE.sub(currentTime, inactivityPeriod);
+        
+        // Check if lastActive is less than inactiveThreshold
+        // If lastActive < inactiveThreshold, then the owner is inactive
+        ebool isInactive = TFHE.lt(lastActive, inactiveThreshold);
+        
+        return isInactive;
     }
     
     function checkInactivity() external {
-        euint8 encryptedResult = verifyInactivity();
-        emit InactivityVerified(encryptedResult);
+        ebool isInactive = verifyInactivity();
+        bool decryptedResult = TFHE.decrypt(isInactive);
+        emit InactivityVerified(decryptedResult);
     }
     
     function distributeAssets() external {
         require(beneficiaries.length > 0, "No beneficiaries defined");
+        
+        // Verify inactivity before distributing
+        ebool isInactive = verifyInactivity();
+        bool decryptedInactive = TFHE.decrypt(isInactive);
+        require(decryptedInactive, "Owner is still active");
         
         uint256 totalBalance = address(this).balance;
         require(totalBalance > 0, "No assets to distribute");
@@ -176,6 +181,14 @@ contract DeadMansSwitchFHE {
     function emergencyWithdraw() external onlyOwner {
         (bool success, ) = owner.call{value: address(this).balance}("");
         require(success, "Transfer failed");
+    }
+    
+    // For checking inactivity period and last active timestamp (for testing)
+    function getDecryptedValues() external view onlyOwner returns (uint32, uint32) {
+        return (
+            TFHE.decrypt(inactivityPeriod),
+            TFHE.decrypt(lastActive)
+        );
     }
     
     receive() external payable {
