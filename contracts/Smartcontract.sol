@@ -54,7 +54,8 @@ contract DeadMansSwitchFHE {
         emit HeartbeatReceived(owner);
     }
     
-    function verifyInactivity() public view returns (euint8) {
+    // Remove the view modifier as TFHE operations modify state
+    function verifyInactivity() public returns (euint8) {
         // Create encrypted current time
         euint32 currentTime = TFHE.asEuint32(uint32(block.timestamp));
         
