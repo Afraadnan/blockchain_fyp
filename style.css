@@ -1,0 +1,209 @@
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: #0d1117;
+  color: #e6edf3;
+  line-height: 1.6;
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+
+/* Header styles */
+.header {
+  background-color: #161b22;
+  border-bottom: 1px solid #30363d;
+  padding: 1.5rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+}
+
+/* Dashboard layout */
+.dashboard {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+/* Control panel */
+.control-panel {
+  grid-column: span 12;
+  margin-bottom: 2rem;
+}
+
+/* Button group */
+.button-group {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Button styles */
+.btn {
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.btn-ping {
+  background-color: #235411;
+  color: white;
+}
+
+.btn-ping:hover {
+  background-color: #2ea043;
+  box-shadow: 0 0 0 3px rgba(35, 134, 54, 0.3);
+}
+
+.btn-verify {
+  background-color: #142f8f;
+  color: white;
+}
+
+.btn-verify:hover {
+  background-color: #388bfd;
+  box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.3);
+}
+
+.btn-claim {
+  background-color:#410459 ;
+  color: white;
+}
+
+.btn-claim:hover {
+  background-color: #600779;
+  box-shadow: 0 0 0 3px rgba(218, 54, 51, 0.3);
+}
+
+/* Status message */
+.status-message {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  background-color: rgba(46, 160, 67, 0.15);
+  border-left: 4px solid #2ea043;
+}
+
+.status-message.success {
+  background-color: rgba(46, 160, 67, 0.15);
+  border-left-color: #2ea043;
+}
+
+.status-message.danger {
+  background-color: rgba(218, 54, 51, 0.15);
+  border-left-color: #da3633;
+}
+
+.status-message.warning {
+  background-color: rgba(240, 136, 62, 0.15);
+  border-left-color: #f0883e;
+}
+
+.status-icon {
+  margin-right: 1rem;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.status-text {
+  font-weight: 500;
+}
+
+/* Panel styles */
+.panel {
+  background-color: #161b22;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.panel-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #30363d;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.panel-body {
+  padding: 1.5rem;
+}
+
+.progress-container {
+  background-color: #30363d;
+  border-radius: 10px;
+  height: 10px;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  border-radius: 10px;
+}
+
+/* Event log */
+.event-log-panel {
+  grid-column: span 12;
+  margin-top: 2rem;
+}
+
+#eventLog {
+  background-color: #161b22;
+  padding: 1.5rem;
+  border-radius: 8px;
+  color: #e6edf3;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Banner for funds release */
+.banner {
+  background-color: #2ea043;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  display: none;
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 8px;
+}

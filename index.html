@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Zamas rust</title>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.0.0/dist/ethers.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <h1 class="header-title">💀 Dead Man's Switch</h1>
+  </header>
+
+  <div class="dashboard">
+    <div class="control-panel">
+      <div class="button-group">
+        <button id="pingButton" class="btn btn-ping">🟢 Ping</button>
+        <button id="verifyButton" class="btn btn-verify">🕵️ Verify Inactivity</button>
+        <button id="claimButton" class="btn btn-claim">💰 Claim Funds</button>
+      </div>
+
+      <div class="status-panel">
+        <div class="status-message" id="status">
+          <div class="status-text">Loading...</div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h3 class="panel-title">Last Ping</h3>
+          </div>
+          <div class="panel-body">
+            <p><strong>Last Ping:</strong> <span id="lastPing">-</span></p>
+            <p><strong>Timeout (seconds):</strong> <span id="timeout">-</span></p>
+            <p><strong>⏳ Time Until Trigger:</strong> <span id="countdown">-</span></p>
+            <div class="progress-container">
+              <div id="progressBar" class="progress-bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="event-log-panel">
+      <h3>📜 Event Log</h3>
+      <div id="eventLog"></div>
+    </div>
+  </div>
+
+  <div class="banner" id="releaseBanner">✅ Funds released to beneficiary!</div>
+ 
+
+  <script>
+    const contractAddress = "0x594616F5e68b48362511C413fFf3EaE95f397049"; 
+    const abi = [  {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_beneficiary",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_timeout",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "beneficiary",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "claim",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "claimed",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "lastPing",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "lastPingTime",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "ping",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "timeout",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "trigger",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "triggered",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    } ];
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(contractAddress, abi, signer);
+
+    let timeoutGlobal = 0;
+    let lastPingGlobal = 0;
+
+    async function updateDisplay() {
+      try {
+        const lastPing = await contract.lastPing();
+        const timeout = await contract.timeout();
+        const now = Math.floor(Date.now() / 1000);
+
+        lastPingGlobal = lastPing.toNumber();
+        timeoutGlobal = timeout.toNumber();
+
+        const remaining = Math.max((lastPingGlobal + timeoutGlobal) - now, 0);
+
+        document.getElementById("lastPing").innerText = new Date(lastPingGlobal * 1000).toLocaleString();
+        document.getElementById("timeout").innerText = timeoutGlobal;
+        document.getElementById("countdown").innerText = formatTime(remaining);
+
+        updateProgressBar(remaining);
+
+        if (remaining === 0) {
+          document.getElementById("status").innerText = "⛔️ Timeout reached – eligible to trigger.";
+          document.getElementById("claimButton").style.display = "inline-block";
+        } else {
+          document.getElementById("status").innerText = "✅ Owner still active.";
+          document.getElementById("claimButton").style.display = "none";
+        }
+      } catch (err) {
+        console.error("Error updating display:", err);
+      }
+    }
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${mins}m ${secs}s`;
+    }
+
+    function updateProgressBar(remaining) {
+      const full = timeoutGlobal;
+      const percent = full > 0 ? (remaining / full) * 100 : 0;
+      const bar = document.getElementById("progressBar");
+      bar.style.width = percent + "%";
+      bar.style.background = percent > 20 ? "linear-gradient(90deg, #4caf50, #81c784)" : "linear-gradient(90deg, #e53935, #ef9a9a)";
+    }
+
+    function logEvent(message) {
+      const log = document.getElementById("eventLog");
+      const timestamp = new Date().toLocaleTimeString();
+      log.innerHTML = `<div>[${timestamp}] ${message}</div>` + log.innerHTML;
+      
+    }
+    async function checkOwner() {
+    const owner = await contract.owner();
+    console.log("Contract owner:", owner);
+    const currentAddress = await signer.getAddress();
+    console.log("Your address:", currentAddress);
+  }
+  checkOwner();
+
+    async function pingContract() {
+      try {
+        const tx = await contract.ping();
+        await tx.wait();
+        logEvent("🔔 Ping sent by owner.");
+        updateDisplay();
+      } catch (err) {
+        console.error("Ping failed:", err);
+        logEvent("❌ Ping failed.");
+      }
+    }
+
+    async function verifyInactivity() {
+      try {
+        const response = await fetch(`http://localhost:8545/check_timeout?last_ping=${lastPingGlobal}&timeout_secs=${timeoutGlobal}`);
+        const shouldTrigger = await response.json();
+
+        if (shouldTrigger) {
+          const tx = await contract.trigger();
+          await tx.wait();
+          logEvent(" User inactive beyond threshold , Switch triggered!");
+          alert("⚠️Beneficiary can now claim funds.");
+        } else {
+          alert("Owner is still active.");
+          logEvent("🕵️ Inactivity check: Owner is still active.");
+        }
+
+        updateDisplay();
+      } catch (err) {
+        console.error("Inactivity check failed:", err);
+        logEvent("❌ Inactivity check failed.");
+      }
+    }
+
+    async function claimFunds() {
+  try {
+    // First check if triggered
+    const isTriggered = await contract.triggered();
+    if (!isTriggered) {
+      logEvent("❌ Cannot claim: switch not triggered yet");
+      return;
+    }
+    
+    const tx = await contract.claim();
+    await tx.wait();
+    logEvent("💰 Funds claimed by beneficiary.");
+    showReleaseBanner();
+    updateDisplay();
+  } catch (err) {
+    console.error("Claim failed:", err);
+    logEvent("❌ Claim failed: " + err.message);
+  }
+}
+
+    function showReleaseBanner() {
+      const banner = document.getElementById("releaseBanner");
+      banner.style.display = "block";
+      setTimeout(() => {
+        banner.style.display = "none";
+      }, 5000);
+    }
+
+    setInterval(updateDisplay, 1000);
+
+    document.getElementById("pingButton").addEventListener("click", pingContract);
+    document.getElementById("verifyButton").addEventListener("click", verifyInactivity);
+    document.getElementById("claimButton").addEventListener("click", claimFunds);
+
+    window.onload = async () => {
+      await provider.send("eth_requestAccounts", []);
+      updateDisplay();
+    };
+  </script>
+</body>
+</html>
